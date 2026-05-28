@@ -247,6 +247,8 @@ minimum_action_interval = 120 seconds
 update_interval = 30 seconds
 ```
 
+`max_grid_import_w` limits how much grid import the controller may use when choosing charging amps. In solar-first use, keep it low, for example `0` to `300 W`. In cheap-hours or urgent charging, use a higher value only if your electrical installation and contracted power allow it.
+
 Cheap-hours and solar windows support ranges that cross midnight, such as:
 
 ```text

@@ -195,7 +195,7 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.current_state = STATE_OFF
             data.reason = "Controller is disabled" if not enabled else "Off mode is enabled"
             data.should_charge = False
-            if self._controlled_charging:
+            if self._controlled_charging or self._is_charge_switch_on():
                 await self._stop_charging(data.reason)
             return data
 
@@ -210,7 +210,7 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.current_state = STATE_IDLE
             data.reason = "Paused because target car SOC is reached"
             data.should_charge = False
-            if self._controlled_charging:
+            if self._controlled_charging or self._is_charge_switch_on():
                 await self._stop_charging(data.reason)
             return data
 
@@ -218,7 +218,7 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.current_state = STATE_PAUSED_HOME_BATTERY_PROTECTION
             data.reason = "Paused because home battery protection is active"
             data.should_charge = False
-            if self._controlled_charging:
+            if self._controlled_charging or self._is_charge_switch_on():
                 await self._stop_charging(data.reason)
             return data
 
@@ -232,7 +232,10 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             await self._start_charging(reason)
             data.is_charging = True
         else:
-            if self._controlled_charging and self._surplus_off_elapsed(now):
+            if (
+                (self._controlled_charging or self._is_charge_switch_on())
+                and self._should_stop_charging(data, now)
+            ):
                 await self._stop_charging(reason)
             data.is_charging = self._controlled_charging
 
@@ -246,18 +249,32 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
         now: datetime,
     ) -> tuple[str, str, int]:
         if mode == MODE_FORCE_CHARGE:
+            desired_amps = self._limit_amps_by_grid_import(int(self.options[OPT_MAX_AMPS]), data)
+            if desired_amps < int(self.options[OPT_MIN_AMPS]):
+                return (
+                    STATE_PAUSED_NO_SURPLUS,
+                    "Paused because maximum grid import limit would be exceeded",
+                    0,
+                )
             return (
                 STATE_CHARGING_FORCED,
                 "Charging because Force charge mode is enabled",
-                int(self.options[OPT_MAX_AMPS]),
+                desired_amps,
             )
 
         if mode == MODE_CHEAP_HOURS:
             if data.in_cheap_hours:
+                desired_amps = self._limit_amps_by_grid_import(int(self.options[OPT_MAX_AMPS]), data)
+                if desired_amps < int(self.options[OPT_MIN_AMPS]):
+                    return (
+                        STATE_PAUSED_NO_SURPLUS,
+                        "Paused because maximum grid import limit would be exceeded",
+                        0,
+                    )
                 return (
                     STATE_CHARGING_CHEAP,
                     "Charging because cheap hours are active",
-                    int(self.options[OPT_MAX_AMPS]),
+                    desired_amps,
                 )
             return (STATE_PAUSED_OUTSIDE_SCHEDULE, "Paused because cheap hours are inactive", 0)
 
@@ -271,10 +288,17 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
                 bool(self.options[OPT_NEED_CAR_TOMORROW])
                 or bool(self.options[OPT_ALLOW_GRID_IMPORT])
             ):
+                desired_amps = self._limit_amps_by_grid_import(int(self.options[OPT_MAX_AMPS]), data)
+                if desired_amps < int(self.options[OPT_MIN_AMPS]):
+                    return (
+                        STATE_PAUSED_NO_SURPLUS,
+                        "Paused because maximum grid import limit would be exceeded",
+                        0,
+                    )
                 return (
                     STATE_CHARGING_CHEAP,
                     "Charging because Hybrid mode allows cheap-hours charging",
-                    int(self.options[OPT_MAX_AMPS]),
+                    desired_amps,
                 )
             if not data.in_solar_window and not data.in_cheap_hours:
                 return (STATE_PAUSED_OUTSIDE_SCHEDULE, "Paused because outside allowed schedules", 0)
@@ -293,7 +317,14 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             return (STATE_PAUSED_NO_SURPLUS, "Paused because no surplus is available", 0)
         if not self._surplus_on_elapsed(now):
             return (STATE_WAITING_FOR_SURPLUS, "Waiting for stable surplus before charging", 0)
-        return (STATE_CHARGING_SOLAR, "Charging with solar surplus", data.recommended_amps)
+        desired_amps = self._limit_amps_by_grid_import(data.recommended_amps, data)
+        if desired_amps < int(self.options[OPT_MIN_AMPS]):
+            return (
+                STATE_PAUSED_NO_SURPLUS,
+                "Paused because maximum grid import limit would be exceeded",
+                0,
+            )
+        return (STATE_CHARGING_SOLAR, "Charging with solar surplus", desired_amps)
 
     def _calculate_recommended_amps(self, surplus_w: float) -> int:
         useful_w = surplus_w - float(self.options[OPT_SAFETY_MARGIN_W])
@@ -324,6 +355,19 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             return 0
 
         return max(0, current_amps * float(self.options[OPT_VOLTAGE]))
+
+    def _limit_amps_by_grid_import(self, requested_amps: int, data: ControllerData) -> int:
+        max_grid_import_w = float(self.options[OPT_MAX_GRID_IMPORT_W])
+        voltage = float(self.options[OPT_VOLTAGE])
+
+        allowed_total_charge_power_w = (
+            data.current_charge_power_w
+            + max_grid_import_w
+            - data.import_w
+            + data.available_surplus_w
+        )
+        allowed_amps = math.floor(max(0, allowed_total_charge_power_w) / voltage)
+        return max(0, min(requested_amps, allowed_amps, int(self.options[OPT_MAX_AMPS])))
 
     def _home_battery_is_protected(self) -> bool:
         if bool(self.options[OPT_ALLOW_HOME_BATTERY]):
@@ -449,6 +493,20 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             return False
         return (now - self._no_surplus_since).total_seconds() >= int(self.options[OPT_SURPLUS_OFF_DURATION])
 
+    def _should_stop_charging(self, data: ControllerData, now: datetime) -> bool:
+        if data.current_state in {
+            STATE_IDLE,
+            STATE_PAUSED_HOME_BATTERY_PROTECTION,
+            STATE_PAUSED_OUTSIDE_SCHEDULE,
+            STATE_OFF,
+        }:
+            return True
+
+        if "maximum grid import limit" in data.reason:
+            return True
+
+        return self._surplus_off_elapsed(now)
+
     def _required_float(self, entity_id: str) -> float:
         value = self._optional_float(entity_id)
         if value is None:
@@ -465,6 +523,15 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             return float(state.state)
         except (TypeError, ValueError):
             return None
+
+    def _is_charge_switch_on(self) -> bool:
+        start_entity = self.config_entry.data.get(CONF_START_CHARGE_ENTITY)
+        stop_entity = self.config_entry.data.get(CONF_STOP_CHARGE_ENTITY)
+        if not start_entity or start_entity != stop_entity or not start_entity.startswith("switch."):
+            return False
+
+        state = self.hass.states.get(start_entity)
+        return state is not None and state.state == "on"
 
     @staticmethod
     def _in_time_window(start_value: str, end_value: str, current: time) -> bool:
