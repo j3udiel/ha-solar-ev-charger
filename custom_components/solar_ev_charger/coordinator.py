@@ -78,6 +78,7 @@ class ControllerData:
     """Current calculated controller state."""
 
     available_surplus_w: float = 0
+    grid_power_w: float = 0
     import_w: float = 0
     recommended_amps: int = 0
     current_state: str = STATE_IDLE
@@ -157,6 +158,7 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.reason = str(err)
             return data
 
+        data.grid_power_w = grid_power
         grid_inverted = bool(self.config_entry.data.get(CONF_GRID_POWER_INVERTED, False))
         if grid_inverted:
             data.available_surplus_w = max(0, grid_power)
@@ -473,6 +475,11 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
         return f"solar_ev_charger_{key}"
 
 
-def _parse_time(value: str) -> time:
-    hour, minute = value.split(":", 1)
-    return time(int(hour), int(minute))
+def _parse_time(value: str | time) -> time:
+    if isinstance(value, time):
+        return value
+
+    parts = value.split(":")
+    if len(parts) < 2:
+        raise ValueError(f"Invalid time value: {value}")
+    return time(int(parts[0]), int(parts[1]))

@@ -86,7 +86,7 @@ class SolarEVChargerOptionsFlow(config_entries.OptionsFlow):
     """Handle options."""
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        self.config_entry = config_entry
+        self._config_entry = config_entry
 
     async def async_step_init(
         self,
@@ -97,7 +97,7 @@ class SolarEVChargerOptionsFlow(config_entries.OptionsFlow):
             options[OPT_MODE] = MODE_VALUES_BY_LABEL.get(options[OPT_MODE], options[OPT_MODE])
             return self.async_create_entry(title="", data=options)
 
-        options = {**DEFAULT_OPTIONS, **dict(self.config_entry.options)}
+        options = {**DEFAULT_OPTIONS, **dict(self._config_entry.options)}
         return self.async_show_form(
             step_id="init",
             data_schema=_options_schema(options),
@@ -140,9 +140,11 @@ def _config_schema() -> vol.Schema:
 
 
 def _options_schema(options: dict[str, Any]) -> vol.Schema:
+    current_mode = MODE_LABELS.get(options[OPT_MODE], options[OPT_MODE])
+
     return vol.Schema(
         {
-            vol.Required(OPT_MODE, default=MODE_LABELS[options[OPT_MODE]]): selector.SelectSelector(
+            vol.Required(OPT_MODE, default=current_mode): selector.SelectSelector(
                 selector.SelectSelectorConfig(options=list(MODE_LABELS.values()))
             ),
             vol.Required(OPT_MIN_AMPS, default=options[OPT_MIN_AMPS]): selector.NumberSelector(

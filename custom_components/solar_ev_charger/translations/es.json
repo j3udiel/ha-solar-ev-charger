@@ -56,6 +56,8 @@
   "entity": {
     "sensor": {
       "available_surplus_w": { "name": "Excedente disponible" },
+      "grid_power_w": { "name": "Potencia de red" },
+      "grid_import_w": { "name": "Importacion de red" },
       "recommended_amps": { "name": "Amperios recomendados" },
       "current_state": { "name": "Estado actual" },
       "last_action": { "name": "Ultima accion" },
@@ -95,4 +97,3 @@
     }
   }
 }
-

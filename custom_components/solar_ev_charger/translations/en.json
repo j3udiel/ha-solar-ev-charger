@@ -56,6 +56,8 @@
   "entity": {
     "sensor": {
       "available_surplus_w": { "name": "Available surplus" },
+      "grid_power_w": { "name": "Grid power" },
+      "grid_import_w": { "name": "Grid import" },
       "recommended_amps": { "name": "Recommended amps" },
       "current_state": { "name": "Current state" },
       "last_action": { "name": "Last action" },
@@ -95,4 +97,3 @@
     }
   }
 }
-

@@ -1,5 +1,7 @@
 # Solar EV Charger Controller
 
+![Solar EV Charger Controller icon](icon.png)
+
 Custom integration for Home Assistant that controls EV charging with solar surplus, cheap electricity windows, and basic home battery protection.
 
 The first target setup is a Tesla Model Y with a Tesla wall charger, solar production, and a Huawei home battery, but the integration is intentionally generic. It controls existing Home Assistant entities instead of depending on one car, charger, inverter, or vendor integration.
@@ -192,6 +194,8 @@ Sensors:
 
 ```text
 sensor.solar_ev_charger_available_surplus_w
+sensor.solar_ev_charger_grid_power_w
+sensor.solar_ev_charger_grid_import_w
 sensor.solar_ev_charger_recommended_amps
 sensor.solar_ev_charger_current_state
 sensor.solar_ev_charger_last_action
@@ -376,4 +380,3 @@ Use conservative limits. Test with supervision. You are responsible for ensuring
 - Spanish 2.0TD tariff helpers.
 - Common Huawei/FusionSolar sensor presets.
 - Advanced Tesla behavior.
-
