@@ -120,6 +120,96 @@ negative = exporting to grid
 
 If your sensor uses the opposite convention, enable `Grid power positive means export` during setup.
 
+### Setup form field guide
+
+#### English
+
+`Grid power sensor`  
+Main sensor used to know whether the house is importing from or exporting to the grid. This is the most important sensor for solar surplus control. It should be a power sensor in watts. Example: `sensor.grid_power`. If the value is negative while exporting, leave `Grid power positive means export` disabled. If the value is positive while exporting, enable it.
+
+`Grid power positive means export`  
+Polarity option for the grid sensor. Disabled means `positive = importing` and `negative = exporting`. Enabled means `positive = exporting` and `negative = importing`.
+
+`Start charge entity`  
+Existing entity that starts EV charging. Use a `button` if your car integration exposes a start command, for example `button.tesla_start_charge`. Use a `switch` if your charger starts when the switch is turned on, for example `switch.ev_charger`.
+
+`Stop charge entity`  
+Existing entity that stops EV charging. Use a stop button such as `button.tesla_stop_charge`, or the same charger switch used above if turning it off stops charging.
+
+`Charge amps number entity`  
+Existing `number` entity that sets charging current in amps. Example: `number.tesla_charging_amps`. The integration writes the calculated recommended amps here before or while charging.
+
+`Solar power sensor`  
+Optional informational sensor for current solar production. It is not the main decision signal because grid import/export is a better real surplus indicator.
+
+`House consumption sensor`  
+Optional informational sensor for current home consumption. It is not required for the first control logic.
+
+`Home battery power sensor`  
+Optional sensor for home battery charge/discharge power. Use it if you want to avoid charging the car from the home battery. Example: `sensor.huawei_battery_power`.
+
+`Home battery power positive means charging`  
+Polarity option for the home battery power sensor. Disabled means `positive = discharging` and `negative = charging`. Enabled means `positive = charging` and `negative = discharging`.
+
+`Home battery SOC sensor`  
+Optional percentage sensor for the home battery state of charge. Example: `sensor.huawei_battery_soc`. If the value is below `Minimum home battery SOC`, the controller can pause charging unless home battery use is allowed.
+
+`Car SOC sensor`  
+Optional percentage sensor for the EV battery level. Example: `sensor.tesla_battery_level`. If configured, the controller stops when the car reaches `Target car SOC`.
+
+`Charger enable switch`  
+Optional general permission switch for the charger. Most Tesla setups should leave this empty. Use it only if you have a separate switch that enables the charger as a whole, different from the start/stop charge command.
+
+`Current energy price sensor`  
+Optional placeholder for future dynamic price logic. It is not required in the current version.
+
+`Solar forecast entity`  
+Optional placeholder for future solar forecast planning. It is not required in the current version.
+
+#### Español
+
+`Grid power sensor` / Sensor de potencia de red  
+Sensor principal para saber si la casa importa de la red o exporta excedente. Es el sensor mas importante para controlar por excedente solar. Debe ser un sensor de potencia en vatios. Ejemplo: `sensor.grid_power`. Si el valor es negativo cuando exportas, deja desactivado `Grid power positive means export`. Si el valor es positivo cuando exportas, activalo.
+
+`Grid power positive means export` / Potencia de red positiva significa exportacion  
+Opcion de polaridad del sensor de red. Desactivado significa `positivo = importacion` y `negativo = exportacion`. Activado significa `positivo = exportacion` y `negativo = importacion`.
+
+`Start charge entity` / Entidad para iniciar carga  
+Entidad existente que inicia la carga del coche. Usa un `button` si la integracion del coche expone un comando de arranque, por ejemplo `button.tesla_start_charge`. Usa un `switch` si el cargador empieza a cargar al encender ese switch, por ejemplo `switch.ev_charger`.
+
+`Stop charge entity` / Entidad para parar carga  
+Entidad existente que para la carga del coche. Usa un boton de parada como `button.tesla_stop_charge`, o el mismo switch del cargador si apagarlo detiene la carga.
+
+`Charge amps number entity` / Entidad number de amperios  
+Entidad `number` existente que define los amperios de carga. Ejemplo: `number.tesla_charging_amps`. La integracion escribe aqui los amperios recomendados antes o durante la carga.
+
+`Solar power sensor` / Sensor de potencia solar  
+Sensor opcional informativo de produccion solar actual. No es la senal principal de decision porque la importacion/exportacion de red representa mejor el excedente real.
+
+`House consumption sensor` / Sensor de consumo de casa  
+Sensor opcional informativo del consumo actual de la vivienda. No es necesario para la primera logica de control.
+
+`Home battery power sensor` / Sensor de potencia de bateria domestica  
+Sensor opcional de potencia de carga/descarga de la bateria domestica. Usalo si quieres evitar cargar el coche desde la bateria de casa. Ejemplo: `sensor.huawei_battery_power`.
+
+`Home battery power positive means charging` / Potencia de bateria positiva significa cargando  
+Opcion de polaridad del sensor de potencia de bateria. Desactivado significa `positivo = descargando` y `negativo = cargando`. Activado significa `positivo = cargando` y `negativo = descargando`.
+
+`Home battery SOC sensor` / Sensor de SOC de bateria domestica  
+Sensor opcional de porcentaje de carga de la bateria de casa. Ejemplo: `sensor.huawei_battery_soc`. Si el valor esta por debajo de `Minimum home battery SOC`, el controlador puede pausar la carga salvo que permitas usar la bateria domestica.
+
+`Car SOC sensor` / Sensor de SOC del coche  
+Sensor opcional de porcentaje de bateria del coche. Ejemplo: `sensor.tesla_battery_level`. Si esta configurado, el controlador para al llegar al `Target car SOC`.
+
+`Charger enable switch` / Switch general del cargador  
+Switch opcional de permiso general del cargador. En la mayoria de setups Tesla debe dejarse vacio. Usalo solo si tienes un switch separado que habilita el cargador completo y que no es el comando normal de start/stop.
+
+`Current energy price sensor` / Sensor de precio actual de energia  
+Campo opcional preparado para futura logica con precios dinamicos. No es necesario en la version actual.
+
+`Solar forecast entity` / Entidad de prevision solar  
+Campo opcional preparado para futura planificacion con prevision solar. No es necesario en la version actual.
+
 ## Modes
 
 `Off`: The controller does nothing. If charging was started by this integration, it may stop it.
