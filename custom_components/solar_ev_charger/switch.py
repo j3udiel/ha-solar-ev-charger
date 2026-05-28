@@ -32,26 +32,31 @@ SWITCHES: tuple[SolarEVChargerSwitchDescription, ...] = (
     SolarEVChargerSwitchDescription(
         key="enabled",
         translation_key="enabled",
+        icon="mdi:power",
         option_key=OPT_ENABLED,
     ),
     SolarEVChargerSwitchDescription(
         key="need_car_tomorrow",
         translation_key="need_car_tomorrow",
+        icon="mdi:calendar-clock",
         option_key=OPT_NEED_CAR_TOMORROW,
     ),
     SolarEVChargerSwitchDescription(
         key="allow_grid_import",
         translation_key="allow_grid_import",
+        icon="mdi:transmission-tower-import",
         option_key=OPT_ALLOW_GRID_IMPORT,
     ),
     SolarEVChargerSwitchDescription(
         key="allow_home_battery",
         translation_key="allow_home_battery",
+        icon="mdi:home-battery",
         option_key=OPT_ALLOW_HOME_BATTERY,
     ),
     SolarEVChargerSwitchDescription(
         key="cheap_hours_all_weekend",
         translation_key="cheap_hours_all_weekend",
+        icon="mdi:calendar-weekend",
         option_key=OPT_CHEAP_HOURS_ALL_WEEKEND,
     ),
 )

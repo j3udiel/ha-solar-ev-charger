@@ -30,6 +30,7 @@ class SolarEVChargerModeSelect(
 
     _attr_has_entity_name = True
     _attr_translation_key = "mode"
+    _attr_icon = "mdi:ev-station"
 
     def __init__(self, coordinator: SolarEVChargerCoordinator) -> None:
         super().__init__(coordinator)

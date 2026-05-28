@@ -26,26 +26,31 @@ BINARY_SENSORS: tuple[SolarEVChargerBinarySensorDescription, ...] = (
     SolarEVChargerBinarySensorDescription(
         key="has_surplus",
         translation_key="has_surplus",
+        icon="mdi:solar-power",
         value_fn=lambda data: data.has_surplus,
     ),
     SolarEVChargerBinarySensorDescription(
         key="in_cheap_hours",
         translation_key="in_cheap_hours",
+        icon="mdi:clock-outline",
         value_fn=lambda data: data.in_cheap_hours,
     ),
     SolarEVChargerBinarySensorDescription(
         key="in_solar_window",
         translation_key="in_solar_window",
+        icon="mdi:weather-sunny",
         value_fn=lambda data: data.in_solar_window,
     ),
     SolarEVChargerBinarySensorDescription(
         key="home_battery_protected",
         translation_key="home_battery_protected",
+        icon="mdi:home-battery",
         value_fn=lambda data: data.home_battery_protected,
     ),
     SolarEVChargerBinarySensorDescription(
         key="should_charge",
         translation_key="should_charge",
+        icon="mdi:ev-station",
         value_fn=lambda data: data.should_charge,
     ),
 )

@@ -26,16 +26,19 @@ BUTTONS: tuple[SolarEVChargerButtonDescription, ...] = (
     SolarEVChargerButtonDescription(
         key="start_now",
         translation_key="start_now",
+        icon="mdi:play",
         press_fn=lambda coordinator: coordinator.async_start_now(),
     ),
     SolarEVChargerButtonDescription(
         key="stop_now",
         translation_key="stop_now",
+        icon="mdi:stop",
         press_fn=lambda coordinator: coordinator.async_stop_now(),
     ),
     SolarEVChargerButtonDescription(
         key="recalculate",
         translation_key="recalculate",
+        icon="mdi:refresh",
         press_fn=lambda coordinator: coordinator.async_recalculate_now(),
     ),
 )

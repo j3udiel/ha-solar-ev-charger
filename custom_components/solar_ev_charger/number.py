@@ -36,6 +36,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="min_amps",
         translation_key="min_amps",
+        icon="mdi:current-ac",
         option_key=OPT_MIN_AMPS,
         native_min_value=1,
         native_max_value=64,
@@ -45,6 +46,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="max_amps",
         translation_key="max_amps",
+        icon="mdi:current-ac",
         option_key=OPT_MAX_AMPS,
         native_min_value=1,
         native_max_value=64,
@@ -54,6 +56,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="safety_margin_w",
         translation_key="safety_margin_w",
+        icon="mdi:shield-outline",
         option_key=OPT_SAFETY_MARGIN_W,
         native_min_value=0,
         native_max_value=5000,
@@ -63,6 +66,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="min_surplus_w",
         translation_key="min_surplus_w",
+        icon="mdi:solar-power",
         option_key=OPT_MIN_SURPLUS_W,
         native_min_value=0,
         native_max_value=22000,
@@ -72,6 +76,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="target_car_soc",
         translation_key="target_car_soc",
+        icon="mdi:car-battery",
         option_key=OPT_TARGET_CAR_SOC,
         native_min_value=1,
         native_max_value=100,
@@ -81,6 +86,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="home_battery_min_soc",
         translation_key="home_battery_min_soc",
+        icon="mdi:home-battery-outline",
         option_key=OPT_HOME_BATTERY_MIN_SOC,
         native_min_value=0,
         native_max_value=100,
@@ -90,6 +96,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="max_grid_import_w",
         translation_key="max_grid_import_w",
+        icon="mdi:transmission-tower-import",
         option_key=OPT_MAX_GRID_IMPORT_W,
         native_min_value=0,
         native_max_value=22000,
@@ -99,6 +106,7 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
     SolarEVChargerNumberDescription(
         key="voltage",
         translation_key="voltage",
+        icon="mdi:sine-wave",
         option_key=OPT_VOLTAGE,
         native_min_value=100,
         native_max_value=260,
