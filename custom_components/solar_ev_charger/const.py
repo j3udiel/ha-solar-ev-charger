@@ -6,7 +6,7 @@ from homeassistant.const import Platform
 
 DOMAIN = "solar_ev_charger"
 NAME = "Solar EV Charger Controller"
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
@@ -47,6 +47,7 @@ OPT_ALLOW_HOME_BATTERY = "allow_home_battery"
 OPT_NEED_CAR_TOMORROW = "need_car_tomorrow"
 OPT_CHEAP_HOURS_START = "cheap_hours_start"
 OPT_CHEAP_HOURS_END = "cheap_hours_end"
+OPT_CHEAP_HOURS_ALL_WEEKEND = "cheap_hours_all_weekend"
 OPT_SOLAR_WINDOW_START = "solar_window_start"
 OPT_SOLAR_WINDOW_END = "solar_window_end"
 OPT_READY_BY_TIME = "ready_by_time"
@@ -110,6 +111,7 @@ DEFAULT_OPTIONS = {
     OPT_NEED_CAR_TOMORROW: False,
     OPT_CHEAP_HOURS_START: "00:00",
     OPT_CHEAP_HOURS_END: "08:00",
+    OPT_CHEAP_HOURS_ALL_WEEKEND: False,
     OPT_SOLAR_WINDOW_START: "09:00",
     OPT_SOLAR_WINDOW_END: "18:00",
     OPT_READY_BY_TIME: "07:30",

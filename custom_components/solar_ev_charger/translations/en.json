@@ -42,6 +42,7 @@
           "need_car_tomorrow": "Need car tomorrow",
           "cheap_hours_start": "Cheap hours start",
           "cheap_hours_end": "Cheap hours end",
+          "cheap_hours_all_weekend": "Cheap hours all weekend",
           "solar_window_start": "Solar window start",
           "solar_window_end": "Solar window end",
           "ready_by_time": "Ready by time",
@@ -75,7 +76,8 @@
       "enabled": { "name": "Enabled" },
       "need_car_tomorrow": { "name": "Need car tomorrow" },
       "allow_grid_import": { "name": "Allow grid import" },
-      "allow_home_battery": { "name": "Allow home battery" }
+      "allow_home_battery": { "name": "Allow home battery" },
+      "cheap_hours_all_weekend": { "name": "Cheap hours all weekend" }
     },
     "number": {
       "min_amps": { "name": "Minimum amps" },

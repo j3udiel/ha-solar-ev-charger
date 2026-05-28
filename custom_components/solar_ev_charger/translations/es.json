@@ -42,6 +42,7 @@
           "need_car_tomorrow": "Necesito el coche manana",
           "cheap_hours_start": "Inicio horario barato",
           "cheap_hours_end": "Fin horario barato",
+          "cheap_hours_all_weekend": "Horario barato todo el fin de semana",
           "solar_window_start": "Inicio horario solar",
           "solar_window_end": "Fin horario solar",
           "ready_by_time": "Hora limite para tener el coche listo",
@@ -75,7 +76,8 @@
       "enabled": { "name": "Activado" },
       "need_car_tomorrow": { "name": "Necesito el coche manana" },
       "allow_grid_import": { "name": "Permitir importar de red" },
-      "allow_home_battery": { "name": "Permitir bateria domestica" }
+      "allow_home_battery": { "name": "Permitir bateria domestica" },
+      "cheap_hours_all_weekend": { "name": "Horario barato todo el fin de semana" }
     },
     "number": {
       "min_amps": { "name": "Amperios minimos" },

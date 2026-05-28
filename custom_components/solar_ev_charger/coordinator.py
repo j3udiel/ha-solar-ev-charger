@@ -37,6 +37,7 @@ from .const import (
     MODES,
     OPT_ALLOW_GRID_IMPORT,
     OPT_ALLOW_HOME_BATTERY,
+    OPT_CHEAP_HOURS_ALL_WEEKEND,
     OPT_CHEAP_HOURS_END,
     OPT_CHEAP_HOURS_START,
     OPT_ENABLED,
@@ -167,11 +168,7 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.available_surplus_w = max(0, -grid_power)
             data.import_w = max(0, grid_power)
 
-        data.in_cheap_hours = self._in_time_window(
-            str(self.options[OPT_CHEAP_HOURS_START]),
-            str(self.options[OPT_CHEAP_HOURS_END]),
-            now.time(),
-        )
+        data.in_cheap_hours = self._in_cheap_hours(now)
         data.in_solar_window = self._in_time_window(
             str(self.options[OPT_SOLAR_WINDOW_START]),
             str(self.options[OPT_SOLAR_WINDOW_END]),
@@ -454,6 +451,16 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
         if start < end:
             return start <= current < end
         return current >= start or current < end
+
+    def _in_cheap_hours(self, now: datetime) -> bool:
+        if bool(self.options[OPT_CHEAP_HOURS_ALL_WEEKEND]) and now.weekday() >= 5:
+            return True
+
+        return self._in_time_window(
+            str(self.options[OPT_CHEAP_HOURS_START]),
+            str(self.options[OPT_CHEAP_HOURS_END]),
+            now.time(),
+        )
 
     @property
     def device_info(self) -> dict[str, Any]:

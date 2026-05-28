@@ -147,6 +147,7 @@ max_grid_import_w = 0
 voltage = 230
 cheap_hours_start = 00:00
 cheap_hours_end = 08:00
+cheap_hours_all_weekend = false
 solar_window_start = 09:00
 solar_window_end = 18:00
 ready_by_time = 07:30
@@ -162,6 +163,14 @@ Cheap-hours and solar windows support ranges that cross midnight, such as:
 23:00 -> 07:00
 ```
 
+If your tariff has cheap electricity all weekend, enable:
+
+```text
+switch.solar_ev_charger_cheap_hours_all_weekend
+```
+
+When enabled, Saturday and Sunday are treated as cheap hours for the full day.
+
 ## Entities created
 
 Switches:
@@ -171,6 +180,7 @@ switch.solar_ev_charger_enabled
 switch.solar_ev_charger_need_car_tomorrow
 switch.solar_ev_charger_allow_grid_import
 switch.solar_ev_charger_allow_home_battery
+switch.solar_ev_charger_cheap_hours_all_weekend
 ```
 
 Select:

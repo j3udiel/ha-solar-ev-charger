@@ -14,6 +14,7 @@ from .const import (
     DOMAIN,
     OPT_ALLOW_GRID_IMPORT,
     OPT_ALLOW_HOME_BATTERY,
+    OPT_CHEAP_HOURS_ALL_WEEKEND,
     OPT_ENABLED,
     OPT_NEED_CAR_TOMORROW,
 )
@@ -47,6 +48,11 @@ SWITCHES: tuple[SolarEVChargerSwitchDescription, ...] = (
         key="allow_home_battery",
         translation_key="allow_home_battery",
         option_key=OPT_ALLOW_HOME_BATTERY,
+    ),
+    SolarEVChargerSwitchDescription(
+        key="cheap_hours_all_weekend",
+        translation_key="cheap_hours_all_weekend",
+        option_key=OPT_CHEAP_HOURS_ALL_WEEKEND,
     ),
 )
 

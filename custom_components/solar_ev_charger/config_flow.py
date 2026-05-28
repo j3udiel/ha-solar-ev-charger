@@ -30,6 +30,7 @@ from .const import (
     MODE_VALUES_BY_LABEL,
     OPT_ALLOW_GRID_IMPORT,
     OPT_ALLOW_HOME_BATTERY,
+    OPT_CHEAP_HOURS_ALL_WEEKEND,
     OPT_CHEAP_HOURS_END,
     OPT_CHEAP_HOURS_START,
     OPT_HOME_BATTERY_MIN_SOC,
@@ -176,6 +177,10 @@ def _options_schema(options: dict[str, Any]) -> vol.Schema:
             vol.Required(OPT_NEED_CAR_TOMORROW, default=options[OPT_NEED_CAR_TOMORROW]): selector.BooleanSelector(),
             vol.Required(OPT_CHEAP_HOURS_START, default=options[OPT_CHEAP_HOURS_START]): selector.TimeSelector(),
             vol.Required(OPT_CHEAP_HOURS_END, default=options[OPT_CHEAP_HOURS_END]): selector.TimeSelector(),
+            vol.Required(
+                OPT_CHEAP_HOURS_ALL_WEEKEND,
+                default=options[OPT_CHEAP_HOURS_ALL_WEEKEND],
+            ): selector.BooleanSelector(),
             vol.Required(OPT_SOLAR_WINDOW_START, default=options[OPT_SOLAR_WINDOW_START]): selector.TimeSelector(),
             vol.Required(OPT_SOLAR_WINDOW_END, default=options[OPT_SOLAR_WINDOW_END]): selector.TimeSelector(),
             vol.Required(OPT_READY_BY_TIME, default=options[OPT_READY_BY_TIME]): selector.TimeSelector(),
