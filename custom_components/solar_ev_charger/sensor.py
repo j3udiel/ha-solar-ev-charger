@@ -32,6 +32,18 @@ SENSORS: tuple[SolarEVChargerSensorDescription, ...] = (
         value_fn=lambda data: round(data.available_surplus_w),
     ),
     SolarEVChargerSensorDescription(
+        key="controllable_surplus_w",
+        translation_key="controllable_surplus_w",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        value_fn=lambda data: round(data.controllable_surplus_w),
+    ),
+    SolarEVChargerSensorDescription(
+        key="current_charge_power_w",
+        translation_key="current_charge_power_w",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        value_fn=lambda data: round(data.current_charge_power_w),
+    ),
+    SolarEVChargerSensorDescription(
         key="grid_power_w",
         translation_key="grid_power_w",
         native_unit_of_measurement=UnitOfPower.WATT,

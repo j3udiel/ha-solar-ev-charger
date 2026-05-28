@@ -296,6 +296,8 @@ Sensors:
 
 ```text
 sensor.solar_ev_charger_available_surplus_w
+sensor.solar_ev_charger_controllable_surplus_w
+sensor.solar_ev_charger_current_charge_power_w
 sensor.solar_ev_charger_grid_power_w
 sensor.solar_ev_charger_grid_import_w
 sensor.solar_ev_charger_recommended_amps

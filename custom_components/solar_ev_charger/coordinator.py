@@ -79,8 +79,10 @@ class ControllerData:
     """Current calculated controller state."""
 
     available_surplus_w: float = 0
+    controllable_surplus_w: float = 0
     grid_power_w: float = 0
     import_w: float = 0
+    current_charge_power_w: float = 0
     recommended_amps: int = 0
     current_state: str = STATE_IDLE
     last_action: str = "none"
@@ -168,13 +170,18 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.available_surplus_w = max(0, -grid_power)
             data.import_w = max(0, grid_power)
 
+        data.current_charge_power_w = self._current_charge_power_w()
+        data.controllable_surplus_w = max(
+            0,
+            data.available_surplus_w + data.current_charge_power_w - data.import_w,
+        )
         data.in_cheap_hours = self._in_cheap_hours(now)
         data.in_solar_window = self._in_time_window(
             str(self.options[OPT_SOLAR_WINDOW_START]),
             str(self.options[OPT_SOLAR_WINDOW_END]),
             now.time(),
         )
-        data.recommended_amps = self._calculate_recommended_amps(data.available_surplus_w)
+        data.recommended_amps = self._calculate_recommended_amps(data.controllable_surplus_w)
         data.estimated_power_w = data.recommended_amps * float(self.options[OPT_VOLTAGE])
         data.has_surplus = data.recommended_amps >= int(self.options[OPT_MIN_AMPS])
         data.home_battery_protected = self._home_battery_is_protected()
@@ -300,6 +307,23 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             int(self.options[OPT_MIN_AMPS]),
             min(int(self.options[OPT_MAX_AMPS]), amps),
         )
+
+    def _current_charge_power_w(self) -> float:
+        """Estimate power already assigned to the car when this controller is charging.
+
+        The grid sensor only sees remaining export after the car has consumed power.
+        While charging, add the current charge power back before recalculating amps.
+        """
+        if not self._controlled_charging:
+            return 0
+
+        current_amps = self._optional_float(self.config_entry.data.get(CONF_CHARGE_AMPS_ENTITY))
+        if current_amps is None:
+            current_amps = self._last_set_amps
+        if current_amps is None:
+            return 0
+
+        return max(0, current_amps * float(self.options[OPT_VOLTAGE]))
 
     def _home_battery_is_protected(self) -> bool:
         if bool(self.options[OPT_ALLOW_HOME_BATTERY]):
