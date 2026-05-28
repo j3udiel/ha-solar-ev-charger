@@ -1,7 +1,7 @@
 # Solar EV Charger Controller
 
 <p align="center">
-  <img src="icon.png" alt="Solar EV Charger Controller icon" width="160">
+  <img src="custom_components/solar_ev_charger/brand/icon.png" alt="Solar EV Charger Controller icon" width="160">
 </p>
 
 Custom integration for Home Assistant that controls EV charging with solar surplus, cheap electricity windows, and basic home battery protection.
