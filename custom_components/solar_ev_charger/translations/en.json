@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Solar EV Charger Controller",
+        "description": "Select the existing Home Assistant entities used to control EV charging.",
+        "data": {
+          "grid_power_sensor": "Grid power sensor",
+          "grid_power_inverted": "Grid power positive means export",
+          "start_charge_entity": "Start charge entity",
+          "stop_charge_entity": "Stop charge entity",
+          "charge_amps_entity": "Charge amps number entity",
+          "solar_power_sensor": "Solar power sensor",
+          "house_consumption_sensor": "House consumption sensor",
+          "home_battery_power_sensor": "Home battery power sensor",
+          "home_battery_power_inverted": "Home battery power positive means charging",
+          "home_battery_soc_sensor": "Home battery SOC sensor",
+          "car_soc_sensor": "Car SOC sensor",
+          "charger_enable_switch": "Charger enable switch",
+          "energy_price_sensor": "Current energy price sensor",
+          "solar_forecast_entity": "Solar forecast entity"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Solar EV Charger options",
+        "data": {
+          "mode": "Charge mode",
+          "min_amps": "Minimum amps",
+          "max_amps": "Maximum amps",
+          "safety_margin_w": "Safety margin",
+          "min_surplus_w": "Minimum surplus",
+          "target_car_soc": "Target car SOC",
+          "home_battery_min_soc": "Minimum home battery SOC",
+          "max_grid_import_w": "Maximum grid import",
+          "voltage": "Voltage",
+          "allow_grid_import": "Allow grid import",
+          "allow_home_battery": "Allow home battery use",
+          "need_car_tomorrow": "Need car tomorrow",
+          "cheap_hours_start": "Cheap hours start",
+          "cheap_hours_end": "Cheap hours end",
+          "solar_window_start": "Solar window start",
+          "solar_window_end": "Solar window end",
+          "ready_by_time": "Ready by time",
+          "surplus_on_duration": "Stable surplus time before start",
+          "surplus_off_duration": "No-surplus time before stop",
+          "minimum_action_interval": "Minimum action interval",
+          "update_interval": "Update interval"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "available_surplus_w": { "name": "Available surplus" },
+      "recommended_amps": { "name": "Recommended amps" },
+      "current_state": { "name": "Current state" },
+      "last_action": { "name": "Last action" },
+      "reason": { "name": "Reason" },
+      "estimated_power_w": { "name": "Estimated power" }
+    },
+    "binary_sensor": {
+      "has_surplus": { "name": "Has surplus" },
+      "in_cheap_hours": { "name": "In cheap hours" },
+      "in_solar_window": { "name": "In solar window" },
+      "home_battery_protected": { "name": "Home battery protected" },
+      "should_charge": { "name": "Should charge" }
+    },
+    "switch": {
+      "enabled": { "name": "Enabled" },
+      "need_car_tomorrow": { "name": "Need car tomorrow" },
+      "allow_grid_import": { "name": "Allow grid import" },
+      "allow_home_battery": { "name": "Allow home battery" }
+    },
+    "number": {
+      "min_amps": { "name": "Minimum amps" },
+      "max_amps": { "name": "Maximum amps" },
+      "safety_margin_w": { "name": "Safety margin" },
+      "min_surplus_w": { "name": "Minimum surplus" },
+      "target_car_soc": { "name": "Target car SOC" },
+      "home_battery_min_soc": { "name": "Minimum home battery SOC" },
+      "max_grid_import_w": { "name": "Maximum grid import" },
+      "voltage": { "name": "Voltage" }
+    },
+    "select": {
+      "mode": { "name": "Mode" }
+    },
+    "button": {
+      "start_now": { "name": "Start now" },
+      "stop_now": { "name": "Stop now" },
+      "recalculate": { "name": "Recalculate" }
+    }
+  }
+}
+

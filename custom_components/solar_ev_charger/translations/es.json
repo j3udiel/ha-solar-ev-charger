@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Solar EV Charger Controller",
+        "description": "Selecciona las entidades existentes de Home Assistant que se usaran para controlar la carga del coche.",
+        "data": {
+          "grid_power_sensor": "Sensor de potencia de red",
+          "grid_power_inverted": "Potencia de red positiva significa exportacion",
+          "start_charge_entity": "Entidad para iniciar carga",
+          "stop_charge_entity": "Entidad para parar carga",
+          "charge_amps_entity": "Entidad number de amperios",
+          "solar_power_sensor": "Sensor de potencia solar",
+          "house_consumption_sensor": "Sensor de consumo de casa",
+          "home_battery_power_sensor": "Sensor de potencia de bateria domestica",
+          "home_battery_power_inverted": "Potencia de bateria positiva significa cargando",
+          "home_battery_soc_sensor": "Sensor de SOC de bateria domestica",
+          "car_soc_sensor": "Sensor de SOC del coche",
+          "charger_enable_switch": "Switch general del cargador",
+          "energy_price_sensor": "Sensor de precio actual de energia",
+          "solar_forecast_entity": "Entidad de prevision solar"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opciones de Solar EV Charger",
+        "data": {
+          "mode": "Modo de carga",
+          "min_amps": "Amperios minimos",
+          "max_amps": "Amperios maximos",
+          "safety_margin_w": "Margen de seguridad",
+          "min_surplus_w": "Excedente minimo",
+          "target_car_soc": "SOC objetivo del coche",
+          "home_battery_min_soc": "SOC minimo de bateria domestica",
+          "max_grid_import_w": "Importacion maxima de red",
+          "voltage": "Voltaje",
+          "allow_grid_import": "Permitir importar de red",
+          "allow_home_battery": "Permitir usar bateria domestica",
+          "need_car_tomorrow": "Necesito el coche manana",
+          "cheap_hours_start": "Inicio horario barato",
+          "cheap_hours_end": "Fin horario barato",
+          "solar_window_start": "Inicio horario solar",
+          "solar_window_end": "Fin horario solar",
+          "ready_by_time": "Hora limite para tener el coche listo",
+          "surplus_on_duration": "Tiempo con excedente antes de arrancar",
+          "surplus_off_duration": "Tiempo sin excedente antes de parar",
+          "minimum_action_interval": "Intervalo minimo entre acciones",
+          "update_interval": "Intervalo de actualizacion"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "available_surplus_w": { "name": "Excedente disponible" },
+      "recommended_amps": { "name": "Amperios recomendados" },
+      "current_state": { "name": "Estado actual" },
+      "last_action": { "name": "Ultima accion" },
+      "reason": { "name": "Motivo" },
+      "estimated_power_w": { "name": "Potencia estimada" }
+    },
+    "binary_sensor": {
+      "has_surplus": { "name": "Tiene excedente" },
+      "in_cheap_hours": { "name": "En horario barato" },
+      "in_solar_window": { "name": "En horario solar" },
+      "home_battery_protected": { "name": "Bateria domestica protegida" },
+      "should_charge": { "name": "Debe cargar" }
+    },
+    "switch": {
+      "enabled": { "name": "Activado" },
+      "need_car_tomorrow": { "name": "Necesito el coche manana" },
+      "allow_grid_import": { "name": "Permitir importar de red" },
+      "allow_home_battery": { "name": "Permitir bateria domestica" }
+    },
+    "number": {
+      "min_amps": { "name": "Amperios minimos" },
+      "max_amps": { "name": "Amperios maximos" },
+      "safety_margin_w": { "name": "Margen de seguridad" },
+      "min_surplus_w": { "name": "Excedente minimo" },
+      "target_car_soc": { "name": "SOC objetivo del coche" },
+      "home_battery_min_soc": { "name": "SOC minimo de bateria domestica" },
+      "max_grid_import_w": { "name": "Importacion maxima de red" },
+      "voltage": { "name": "Voltaje" }
+    },
+    "select": {
+      "mode": { "name": "Modo" }
+    },
+    "button": {
+      "start_now": { "name": "Arrancar ahora" },
+      "stop_now": { "name": "Parar ahora" },
+      "recalculate": { "name": "Recalcular" }
+    }
+  }
+}
+

@@ -1,0 +1,52 @@
+start:
+  name: Start charging
+  description: Start charging through the configured start entity.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Optional controller config entry ID. Required when multiple controllers exist.
+      selector:
+        text:
+
+stop:
+  name: Stop charging
+  description: Stop charging through the configured stop entity.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Optional controller config entry ID. Required when multiple controllers exist.
+      selector:
+        text:
+
+recalculate:
+  name: Recalculate
+  description: Recalculate surplus, recommended amps, and controller state immediately.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Optional controller config entry ID. Required when multiple controllers exist.
+      selector:
+        text:
+
+set_mode:
+  name: Set mode
+  description: Set the charger controller operating mode.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Optional controller config entry ID. Required when multiple controllers exist.
+      selector:
+        text:
+    mode:
+      name: Mode
+      required: true
+      selector:
+        select:
+          options:
+            - "Off"
+            - "Solar only"
+            - "Cheap hours"
+            - "Hybrid"
+            - "Force charge"
+            - "Manual"
+
