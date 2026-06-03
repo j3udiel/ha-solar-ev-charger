@@ -6,7 +6,7 @@ from homeassistant.const import Platform
 
 DOMAIN = "solar_ev_charger"
 NAME = "Solar EV Charger Controller"
-VERSION = "0.1.7"
+VERSION = "0.1.8"
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,

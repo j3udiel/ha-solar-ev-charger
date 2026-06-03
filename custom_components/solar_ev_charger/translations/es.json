@@ -75,7 +75,7 @@
       "should_charge": { "name": "Debe cargar" }
     },
     "switch": {
-      "enabled": { "name": "Activado" },
+      "enabled": { "name": "Controlador activado" },
       "need_car_tomorrow": { "name": "Necesito el coche manana" },
       "allow_grid_import": { "name": "Permitir importar de red" },
       "allow_home_battery": { "name": "Permitir bateria domestica" },

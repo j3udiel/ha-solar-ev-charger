@@ -75,7 +75,7 @@
       "should_charge": { "name": "Should charge" }
     },
     "switch": {
-      "enabled": { "name": "Enabled" },
+      "enabled": { "name": "Controller enabled" },
       "need_car_tomorrow": { "name": "Need car tomorrow" },
       "allow_grid_import": { "name": "Allow grid import" },
       "allow_home_battery": { "name": "Allow home battery" },
