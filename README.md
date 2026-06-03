@@ -434,6 +434,8 @@ If `Allow home battery` is off, the controller pauses charging when:
 - Home battery SOC is below the configured minimum.
 - Home battery power indicates discharge.
 
+This protection applies to solar-surplus charging. It does not block explicit cheap-hours charging in `Cheap hours` mode, or in `Hybrid` mode when `Need car tomorrow` or `Allow grid import` is enabled. In those cases the controller assumes the intent is to charge from the grid during the cheap window, and the `Maximum grid import` limit is used to cap the charging current.
+
 During setup, choose the battery power polarity. The default is:
 
 ```text

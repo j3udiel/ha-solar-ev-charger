@@ -214,14 +214,6 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
                 await self._stop_charging(data.reason)
             return data
 
-        if mode != MODE_FORCE_CHARGE and data.home_battery_protected:
-            data.current_state = STATE_PAUSED_HOME_BATTERY_PROTECTION
-            data.reason = "Paused because home battery protection is active"
-            data.should_charge = False
-            if self._controlled_charging or self._is_charge_switch_on():
-                await self._stop_charging(data.reason)
-            return data
-
         decision_state, reason, desired_amps = self._decide_charge(data, mode, now)
         data.current_state = decision_state
         data.reason = reason
@@ -313,6 +305,12 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
     ) -> tuple[str, str, int]:
         if not data.in_solar_window:
             return (STATE_PAUSED_OUTSIDE_SCHEDULE, "Paused because outside solar window", 0)
+        if data.home_battery_protected:
+            return (
+                STATE_PAUSED_HOME_BATTERY_PROTECTION,
+                "Paused because home battery protection is active",
+                0,
+            )
         if not data.has_surplus:
             return (STATE_PAUSED_NO_SURPLUS, "Paused because no surplus is available", 0)
         if not self._surplus_on_elapsed(now):
