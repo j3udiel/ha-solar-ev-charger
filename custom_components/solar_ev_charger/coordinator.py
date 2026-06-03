@@ -191,9 +191,16 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
         mode = str(self.options[OPT_MODE])
         enabled = bool(self.options[OPT_ENABLED])
 
-        if not enabled or mode == MODE_OFF:
+        if not enabled:
             data.current_state = STATE_OFF
-            data.reason = "Controller is disabled" if not enabled else "Off mode is enabled"
+            data.reason = "Controller is disabled"
+            data.should_charge = False
+            data.is_charging = self._controlled_charging or self._is_charge_switch_on()
+            return data
+
+        if mode == MODE_OFF:
+            data.current_state = STATE_OFF
+            data.reason = "Off mode is enabled"
             data.should_charge = False
             if self._controlled_charging or self._is_charge_switch_on():
                 await self._stop_charging(data.reason)

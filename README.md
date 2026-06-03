@@ -276,9 +276,9 @@ When this switch is off:
 - The integration remains loaded in Home Assistant.
 - Diagnostic sensors and binary sensors continue to update.
 - The controller does not send start, stop, or charging-amps commands.
-- If charging was started by the controller, it may send a stop command before going idle.
+- Existing car/charger state is left untouched.
 
-Use `Manual` mode when you want diagnostics but also want to keep the car/charger exactly as you left it. Use `Controller enabled = off` when you want a clear global pause for the controller behavior.
+Use `Manual` mode when you want diagnostics and mode context while keeping the car/charger exactly as you left it. Use `Controller enabled = off` when you want a clear global pause for all controller behavior. Use `Off` mode when you explicitly want the controller to stop charging if it was controlling the session.
 
 ## Entities created
 
