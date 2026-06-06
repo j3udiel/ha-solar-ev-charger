@@ -35,6 +35,7 @@
           "min_surplus_w": "Excedente minimo",
           "target_car_soc": "SOC objetivo del coche",
           "home_battery_min_soc": "SOC minimo de bateria domestica",
+          "home_battery_buffer_w": "Buffer de bateria domestica",
           "max_grid_import_w": "Importacion maxima de red",
           "voltage": "Voltaje",
           "allow_grid_import": "Permitir importar de red",
@@ -59,6 +60,7 @@
       "available_surplus_w": { "name": "Excedente disponible" },
       "controllable_surplus_w": { "name": "Excedente controlable" },
       "current_charge_power_w": { "name": "Potencia de carga actual" },
+      "home_battery_buffer_available_w": { "name": "Buffer de bateria domestica disponible" },
       "grid_power_w": { "name": "Potencia de red" },
       "grid_import_w": { "name": "Importacion de red" },
       "recommended_amps": { "name": "Amperios recomendados" },
@@ -88,6 +90,7 @@
       "min_surplus_w": { "name": "Excedente minimo" },
       "target_car_soc": { "name": "SOC objetivo del coche" },
       "home_battery_min_soc": { "name": "SOC minimo de bateria domestica" },
+      "home_battery_buffer_w": { "name": "Buffer de bateria domestica" },
       "max_grid_import_w": { "name": "Importacion maxima de red" },
       "voltage": { "name": "Voltaje" }
     },

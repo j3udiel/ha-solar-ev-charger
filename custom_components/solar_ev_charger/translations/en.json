@@ -35,6 +35,7 @@
           "min_surplus_w": "Minimum surplus",
           "target_car_soc": "Target car SOC",
           "home_battery_min_soc": "Minimum home battery SOC",
+          "home_battery_buffer_w": "Home battery buffer",
           "max_grid_import_w": "Maximum grid import",
           "voltage": "Voltage",
           "allow_grid_import": "Allow grid import",
@@ -59,6 +60,7 @@
       "available_surplus_w": { "name": "Available surplus" },
       "controllable_surplus_w": { "name": "Controllable surplus" },
       "current_charge_power_w": { "name": "Current charge power" },
+      "home_battery_buffer_available_w": { "name": "Home battery buffer available" },
       "grid_power_w": { "name": "Grid power" },
       "grid_import_w": { "name": "Grid import" },
       "recommended_amps": { "name": "Recommended amps" },
@@ -88,6 +90,7 @@
       "min_surplus_w": { "name": "Minimum surplus" },
       "target_car_soc": { "name": "Target car SOC" },
       "home_battery_min_soc": { "name": "Minimum home battery SOC" },
+      "home_battery_buffer_w": { "name": "Home battery buffer" },
       "max_grid_import_w": { "name": "Maximum grid import" },
       "voltage": { "name": "Voltage" }
     },

@@ -13,6 +13,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     DOMAIN,
+    OPT_HOME_BATTERY_BUFFER_W,
     OPT_HOME_BATTERY_MIN_SOC,
     OPT_MAX_AMPS,
     OPT_MAX_GRID_IMPORT_W,
@@ -92,6 +93,16 @@ NUMBERS: tuple[SolarEVChargerNumberDescription, ...] = (
         native_max_value=100,
         native_step=1,
         native_unit_of_measurement=PERCENTAGE,
+    ),
+    SolarEVChargerNumberDescription(
+        key="home_battery_buffer_w",
+        translation_key="home_battery_buffer_w",
+        icon="mdi:home-battery",
+        option_key=OPT_HOME_BATTERY_BUFFER_W,
+        native_min_value=0,
+        native_max_value=22000,
+        native_step=50,
+        native_unit_of_measurement=UnitOfPower.WATT,
     ),
     SolarEVChargerNumberDescription(
         key="max_grid_import_w",

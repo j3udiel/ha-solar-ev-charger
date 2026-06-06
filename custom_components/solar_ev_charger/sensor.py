@@ -47,6 +47,13 @@ SENSORS: tuple[SolarEVChargerSensorDescription, ...] = (
         value_fn=lambda data: round(data.current_charge_power_w),
     ),
     SolarEVChargerSensorDescription(
+        key="home_battery_buffer_available_w",
+        translation_key="home_battery_buffer_available_w",
+        icon="mdi:home-battery",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        value_fn=lambda data: round(data.home_battery_buffer_available_w),
+    ),
+    SolarEVChargerSensorDescription(
         key="grid_power_w",
         translation_key="grid_power_w",
         icon="mdi:transmission-tower",

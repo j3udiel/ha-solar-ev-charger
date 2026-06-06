@@ -41,6 +41,7 @@ from .const import (
     OPT_CHEAP_HOURS_END,
     OPT_CHEAP_HOURS_START,
     OPT_ENABLED,
+    OPT_HOME_BATTERY_BUFFER_W,
     OPT_HOME_BATTERY_MIN_SOC,
     OPT_MAX_AMPS,
     OPT_MAX_GRID_IMPORT_W,
@@ -83,6 +84,7 @@ class ControllerData:
     grid_power_w: float = 0
     import_w: float = 0
     current_charge_power_w: float = 0
+    home_battery_buffer_available_w: float = 0
     recommended_amps: int = 0
     current_state: str = STATE_IDLE
     last_action: str = "none"
@@ -171,9 +173,18 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             data.import_w = max(0, grid_power)
 
         data.current_charge_power_w = self._current_charge_power_w()
+        data.home_battery_buffer_available_w = self._home_battery_buffer_available_w()
+        usable_battery_buffer_w = (
+            data.home_battery_buffer_available_w
+            if data.current_charge_power_w > 0
+            else 0
+        )
         data.controllable_surplus_w = max(
             0,
-            data.available_surplus_w + data.current_charge_power_w - data.import_w,
+            data.available_surplus_w
+            + data.current_charge_power_w
+            + usable_battery_buffer_w
+            - data.import_w,
         )
         data.in_cheap_hours = self._in_cheap_hours(now)
         data.in_solar_window = self._in_time_window(
@@ -388,9 +399,21 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             if power is not None:
                 inverted = bool(self.config_entry.data.get(CONF_HOME_BATTERY_POWER_INVERTED, False))
                 discharging = power < 0 if inverted else power > 0
-                if discharging:
+                if discharging and self._home_battery_buffer_available_w(soc) <= 0:
                     return True
         return False
+
+    def _home_battery_buffer_available_w(self, soc: float | None = None) -> float:
+        buffer_w = float(self.options[OPT_HOME_BATTERY_BUFFER_W])
+        if buffer_w <= 0:
+            return 0
+
+        if soc is None:
+            soc = self._optional_float(self.config_entry.data.get(CONF_HOME_BATTERY_SOC_SENSOR))
+        if soc is None or soc < float(self.options[OPT_HOME_BATTERY_MIN_SOC]):
+            return 0
+
+        return buffer_w
 
     async def _set_charge_amps(self, amps: int, force: bool = False) -> None:
         entity_id = self.config_entry.data.get(CONF_CHARGE_AMPS_ENTITY)

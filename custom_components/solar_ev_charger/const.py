@@ -6,7 +6,7 @@ from homeassistant.const import Platform
 
 DOMAIN = "solar_ev_charger"
 NAME = "Solar EV Charger Controller"
-VERSION = "0.1.9"
+VERSION = "0.2.0"
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
@@ -40,6 +40,7 @@ OPT_SAFETY_MARGIN_W = "safety_margin_w"
 OPT_MIN_SURPLUS_W = "min_surplus_w"
 OPT_TARGET_CAR_SOC = "target_car_soc"
 OPT_HOME_BATTERY_MIN_SOC = "home_battery_min_soc"
+OPT_HOME_BATTERY_BUFFER_W = "home_battery_buffer_w"
 OPT_MAX_GRID_IMPORT_W = "max_grid_import_w"
 OPT_VOLTAGE = "voltage"
 OPT_ALLOW_GRID_IMPORT = "allow_grid_import"
@@ -104,6 +105,7 @@ DEFAULT_OPTIONS = {
     OPT_MIN_SURPLUS_W: 1400,
     OPT_TARGET_CAR_SOC: 80,
     OPT_HOME_BATTERY_MIN_SOC: 80,
+    OPT_HOME_BATTERY_BUFFER_W: 0,
     OPT_MAX_GRID_IMPORT_W: 0,
     OPT_VOLTAGE: 230,
     OPT_ALLOW_GRID_IMPORT: False,

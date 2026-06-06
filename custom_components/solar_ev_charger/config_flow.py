@@ -33,6 +33,7 @@ from .const import (
     OPT_CHEAP_HOURS_ALL_WEEKEND,
     OPT_CHEAP_HOURS_END,
     OPT_CHEAP_HOURS_START,
+    OPT_HOME_BATTERY_BUFFER_W,
     OPT_HOME_BATTERY_MIN_SOC,
     OPT_MAX_AMPS,
     OPT_MAX_GRID_IMPORT_W,
@@ -165,6 +166,12 @@ def _options_schema(options: dict[str, Any]) -> vol.Schema:
             ),
             vol.Required(OPT_HOME_BATTERY_MIN_SOC, default=options[OPT_HOME_BATTERY_MIN_SOC]): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=100, step=1, unit_of_measurement="%")
+            ),
+            vol.Required(
+                OPT_HOME_BATTERY_BUFFER_W,
+                default=options[OPT_HOME_BATTERY_BUFFER_W],
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=22000, step=50, unit_of_measurement="W")
             ),
             vol.Required(OPT_MAX_GRID_IMPORT_W, default=options[OPT_MAX_GRID_IMPORT_W]): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=22000, step=50, unit_of_measurement="W")

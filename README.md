@@ -233,6 +233,7 @@ safety_margin_w = 300
 min_surplus_w = 1400
 target_car_soc = 80
 home_battery_min_soc = 80
+home_battery_buffer_w = 0
 max_grid_import_w = 0
 voltage = 230
 cheap_hours_start = 00:00
@@ -307,6 +308,7 @@ number.solar_ev_charger_safety_margin_w
 number.solar_ev_charger_min_surplus_w
 number.solar_ev_charger_target_car_soc
 number.solar_ev_charger_home_battery_min_soc
+number.solar_ev_charger_home_battery_buffer_w
 number.solar_ev_charger_max_grid_import_w
 number.solar_ev_charger_voltage
 ```
@@ -317,6 +319,7 @@ Sensors:
 sensor.solar_ev_charger_available_surplus_w
 sensor.solar_ev_charger_controllable_surplus_w
 sensor.solar_ev_charger_current_charge_power_w
+sensor.solar_ev_charger_home_battery_buffer_available_w
 sensor.solar_ev_charger_grid_power_w
 sensor.solar_ev_charger_grid_import_w
 sensor.solar_ev_charger_recommended_amps
@@ -452,6 +455,20 @@ If `Allow home battery` is off, the controller pauses charging when:
 - Home battery power indicates discharge.
 
 This protection applies to solar-surplus charging. It does not block explicit cheap-hours charging in `Cheap hours` mode, or in `Hybrid` mode when `Need car tomorrow` or `Allow grid import` is enabled. In those cases the controller assumes the intent is to charge from the grid during the cheap window, and the `Maximum grid import` limit is used to cap the charging current.
+
+`Home battery buffer` lets the home battery smooth solar charging while the car is already charging. Set it to `0 W` to disable it. If you set it to your battery charge/discharge limit, for example `2500 W`, that power is added to the controllable surplus only while:
+
+- The controller already has an active charging session.
+- The home battery SOC is at or above `Minimum home battery SOC`.
+
+This is useful when the home battery is near full, has reached its maximum charge power, and the house starts exporting. The controller still uses real grid export to start solar charging, but once charging is active the buffer can prevent unnecessary stops during short dips. If the home battery SOC drops below the configured minimum, the buffer becomes `0 W` and normal battery protection applies again.
+
+Example for a Huawei battery that should stay at or above 95% and can charge/discharge around 2500 W:
+
+```text
+home_battery_min_soc = 95
+home_battery_buffer_w = 2500
+```
 
 During setup, choose the battery power polarity. The default is:
 
