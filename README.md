@@ -456,12 +456,12 @@ If `Allow home battery` is off, the controller pauses charging when:
 
 This protection applies to solar-surplus charging. It does not block explicit cheap-hours charging in `Cheap hours` mode, or in `Hybrid` mode when `Need car tomorrow` or `Allow grid import` is enabled. In those cases the controller assumes the intent is to charge from the grid during the cheap window, and the `Maximum grid import` limit is used to cap the charging current.
 
-`Home battery buffer` lets the home battery smooth solar charging while the car is already charging. Set it to `0 W` to disable it. If you set it to your battery charge/discharge limit, for example `2500 W`, that power is added to the controllable surplus only while:
+`Home battery buffer` lets the home battery smooth solar charging while the car is already charging. Set it to `0 W` to disable it. The buffer does not increase the normal recommended charging amps and it does not start charging from the battery. It only allows the controller to keep charging at `Minimum amps` during short solar dips while:
 
 - The controller already has an active charging session.
 - The home battery SOC is at or above `Minimum home battery SOC`.
 
-This is useful when the home battery is near full, has reached its maximum charge power, and the house starts exporting. The controller still uses real grid export to start solar charging, but once charging is active the buffer can prevent unnecessary stops during short dips. If the home battery SOC drops below the configured minimum, the buffer becomes `0 W` and normal battery protection applies again.
+This is useful when the home battery is near full, has reached its maximum charge power, and the house starts exporting. The controller still uses real grid export to start solar charging. Once charging is active, the controller will reduce amps when solar drops; if it would otherwise stop, the buffer can hold the minimum current instead. If the home battery SOC drops below the configured minimum, the buffer becomes `0 W` and normal battery protection applies again.
 
 Example for a Huawei battery that should stay at or above 95% and can charge/discharge around 2500 W:
 

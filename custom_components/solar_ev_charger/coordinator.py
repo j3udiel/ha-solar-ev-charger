@@ -174,16 +174,10 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
 
         data.current_charge_power_w = self._current_charge_power_w()
         data.home_battery_buffer_available_w = self._home_battery_buffer_available_w()
-        usable_battery_buffer_w = (
-            data.home_battery_buffer_available_w
-            if data.current_charge_power_w > 0
-            else 0
-        )
         data.controllable_surplus_w = max(
             0,
             data.available_surplus_w
             + data.current_charge_power_w
-            + usable_battery_buffer_w
             - data.import_w,
         )
         data.in_cheap_hours = self._in_cheap_hours(now)
@@ -292,7 +286,7 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             return self._solar_decision(data, now)
 
         if mode == MODE_HYBRID:
-            if data.in_solar_window and data.has_surplus:
+            if data.in_solar_window:
                 return self._solar_decision(data, now)
             if data.in_cheap_hours and (
                 bool(self.options[OPT_NEED_CAR_TOMORROW])
@@ -330,6 +324,15 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
                 0,
             )
         if not data.has_surplus:
+            buffered_min_amps = self._buffered_min_charge_amps(data)
+            if buffered_min_amps >= int(self.options[OPT_MIN_AMPS]):
+                desired_amps = self._limit_amps_by_grid_import(buffered_min_amps, data)
+                if desired_amps >= int(self.options[OPT_MIN_AMPS]):
+                    return (
+                        STATE_CHARGING_SOLAR,
+                        "Charging at minimum current using home battery buffer",
+                        desired_amps,
+                    )
             return (STATE_PAUSED_NO_SURPLUS, "Paused because no surplus is available", 0)
         if not self._surplus_on_elapsed(now):
             return (STATE_WAITING_FOR_SURPLUS, "Waiting for stable surplus before charging", 0)
@@ -354,6 +357,22 @@ class SolarEVChargerCoordinator(DataUpdateCoordinator[ControllerData]):
             int(self.options[OPT_MIN_AMPS]),
             min(int(self.options[OPT_MAX_AMPS]), amps),
         )
+
+    def _buffered_min_charge_amps(self, data: ControllerData) -> int:
+        if data.current_charge_power_w <= 0 or data.home_battery_buffer_available_w <= 0:
+            return 0
+
+        min_amps = int(self.options[OPT_MIN_AMPS])
+        voltage = float(self.options[OPT_VOLTAGE])
+        useful_w = (
+            data.controllable_surplus_w
+            + data.home_battery_buffer_available_w
+            - float(self.options[OPT_SAFETY_MARGIN_W])
+        )
+        if useful_w < min_amps * voltage:
+            return 0
+
+        return min_amps
 
     def _current_charge_power_w(self) -> float:
         """Estimate power already assigned to the car when this controller is charging.
